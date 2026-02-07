@@ -11,7 +11,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 class LoginPage extends StatefulWidget {
   static String id = 'LoginPage';
 
-  LoginPage({super.key});
+  const LoginPage({super.key});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -84,7 +84,7 @@ class _LoginPageState extends State<LoginPage> {
                       isLoading = true;
                       setState(() {});
                       try {
-                        await LoginPage();
+                        LoginPage();
 
                         Navigator.pushNamed(
                           context,

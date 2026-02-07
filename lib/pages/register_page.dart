@@ -8,7 +8,7 @@ import 'package:folder/widget/custom_text_field.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class RegisterPage extends StatefulWidget {
-  RegisterPage({super.key});
+  const RegisterPage({super.key});
   static String id = 'RegisterPage';
 
   @override

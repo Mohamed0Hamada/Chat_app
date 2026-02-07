@@ -13,6 +13,8 @@ class ChatPage extends StatelessWidget {
   );
   TextEditingController Controller = TextEditingController();
 
+  ChatPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     var email = ModalRoute.of(context)!.settings.arguments;

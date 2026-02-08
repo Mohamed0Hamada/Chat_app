@@ -22,7 +22,7 @@ class RegisterPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<RegisterCubit, RegisterState>(
+    return BlocConsumer<RegisterCubit, RegisterState>(
       listener: (context, state) {
         if (state is RegisterLoading) {
           isLoading = true;
@@ -34,7 +34,7 @@ class RegisterPage extends StatelessWidget {
           showSnachBar(context, state.errorMessage);
         }
       },
-      child: ModalProgressHUD(
+      builder: (context, state) => ModalProgressHUD(
         inAsyncCall: isLoading,
         child: Scaffold(
           backgroundColor: kPrimaryColor,
@@ -88,31 +88,9 @@ class RegisterPage extends StatelessWidget {
                   CustomButton(
                     onTap: () async {
                       if (formKey.currentState!.validate()) {
-                        isLoading = true;
-
-                        try {
-                          await registerUser();
-                          Navigator.pushNamed(
-                            context,
-                            ChatPage.id,
-                            arguments: email,
-                          );
-                        } on FirebaseAuthException catch (e) {
-                          if (e.code == 'weak-password') {
-                            showSnachBar(
-                              context,
-                              'The password provided is too weak.',
-                            );
-                          } else if (e.code == 'email-already-in-use') {
-                            showSnachBar(
-                              context,
-                              'The account already exists for that email.',
-                            );
-                          }
-                        } catch (e) {
-                          showSnachBar(context, 'there was an error');
-                        }
-                        isLoading = false;
+                        BlocProvider.of<RegisterCubit>(
+                          context,
+                        ).registerUser(email: email!, password: password!);
                       } else {}
                     },
                     title: 'Register',

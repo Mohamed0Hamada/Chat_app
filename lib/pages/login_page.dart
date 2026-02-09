@@ -21,7 +21,7 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<LoginCubit, LoginState>(
+    return BlocConsumer<LoginCubit, LoginState>(
       listener: (context, state) {
         if (state is LoginLoading) {
           isLoading = true;
@@ -30,10 +30,10 @@ class LoginPage extends StatelessWidget {
           Navigator.pushNamed(context, ChatPage.id, arguments: email);
         } else if (state is LoginFailure) {
           isLoading = false;
-          showSnachBar(context, 'Login Failed. Please try again.');
+          showSnachBar(context, state.errorMessage);
         }
       },
-      child: ModalProgressHUD(
+      builder: (context, state) => ModalProgressHUD(
         inAsyncCall: isLoading,
         child: Scaffold(
           backgroundColor: kPrimaryColor,
@@ -88,32 +88,9 @@ class LoginPage extends StatelessWidget {
                   CustomButton(
                     onTap: () async {
                       if (formKey.currentState!.validate()) {
-                        isLoading = true;
-
-                        try {
-                          LoginPage();
-
-                          Navigator.pushNamed(
-                            context,
-                            ChatPage.id,
-                            arguments: email,
-                          );
-                        } on FirebaseAuthException catch (e) {
-                          if (e.code == 'user-not-found') {
-                            showSnachBar(
-                              context,
-                              'No user found for that email.',
-                            );
-                          } else if (e.code == 'wrong-password') {
-                            showSnachBar(
-                              context,
-                              'Wrong password provided for that user.',
-                            );
-                          }
-                        } catch (e) {
-                          showSnachBar(context, 'there was an error');
-                        }
-                        isLoading = false;
+                        BlocProvider.of<LoginCubit>(
+                          context,
+                        ).LoginUser(email: email!, password: password!);
                       } else {}
                     },
 

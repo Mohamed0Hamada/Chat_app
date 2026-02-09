@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:folder/models/message.dart';
 import 'package:folder/pages/cubits/chat_cubit/chat_state.dart';
 import 'package:folder/widget/constant.dart';
 
@@ -14,7 +15,11 @@ class ChatCubit extends Cubit<ChatState> {
 
   void getMessage({required String message, required String email}) {
     messages.orderBy(kCreatedAt, descending: true).snapshots().listen((event) {
-      emit(ChatSuccess());
+      List<Message> messagesList = [];
+      for (var doc in event.docs) {
+        messagesList.add(Message.fromJson(doc));
+      }
+      emit(ChatSuccess(messages: messagesList));
     });
   }
 }

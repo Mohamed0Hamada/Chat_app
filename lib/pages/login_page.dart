@@ -27,6 +27,7 @@ class LoginPage extends StatelessWidget {
           isLoading = true;
         } else if (state is LoginSuccess) {
           isLoading = false;
+          
           Navigator.pushNamed(context, ChatPage.id, arguments: email);
         } else if (state is LoginFailure) {
           isLoading = false;

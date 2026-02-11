@@ -29,5 +29,9 @@ class LoginCubit extends Cubit<LoginState> {
         ),
       );
     }
+    onChange(Change<LoginState> change) {
+      super.onChange(change);
+      print(change);
+    }
   }
 }
